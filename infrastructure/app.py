@@ -47,7 +47,7 @@ class ThenPipelineBackyardStack(cdk.Stack):
         )
 
         pipeline.add_stage(
-            stage=ThenBackyardAppStage(scope=scope, id=id)
+            stage=ThenBackyardAppStage(scope=scope, id='ThenBackyardAppStage')
         )
 
 
@@ -56,7 +56,7 @@ app = cdk.App()
 logging.info(f'ACCOUNT 👉🏽 {os.getenv("ACCOUNT")}')
 logging.info(f'REGION 🌎 {os.getenv("REGION")}')
 
-ThenPipelineBackyardStack(app, 'ThenPipelineBackyardStack');
+ThenPipelineBackyardStack(app, id='ThenPipelineBackyardStack')
 
 app.synth()
 
