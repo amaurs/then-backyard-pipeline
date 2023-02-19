@@ -27,6 +27,6 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                             'GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME': os.getenv(
                                                 "GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME"),
                                         },
-                                        primary_output_directory='cdk.out'
+                                        primary_output_directory='infrastructure/cdk.out'
                                         )
                                 )
