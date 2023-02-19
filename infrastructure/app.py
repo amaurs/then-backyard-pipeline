@@ -12,7 +12,7 @@ logging.info(f'REGION 🌎 {os.getenv("REGION")}')
 app = cdk.App()
 ThenBackyardPipelineStack(
     scope=app,
-    id='ThenPipelineBackyardStack',
+    construct_id='ThenPipelineBackyardStack',
     env=cdk.Environment(account=os.getenv("ACCOUNT"), region=os.getenv("REGION")))
 
 app.synth()
