@@ -9,7 +9,7 @@ class ThenBackyardPipelineStack(cdk.Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        pipeline = CodePipeline(self, "Pipeline",
+        pipeline = CodePipeline(self, "ThenBackyardPipeline",
                         pipeline_name="ThenBackyardPipeline",
                         synth=ShellStep("Synth",
                             input=CodePipelineSource.git_hub("amaurs/then-backyard-pipeline", "main"),
