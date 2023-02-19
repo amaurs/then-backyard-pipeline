@@ -22,6 +22,3 @@ class ChaliceApp(cdk.Stack):
                 'environment_variables': {}
             }
         )
-        self.dynamodb_table.grant_read_write_data(
-            self.chalice.get_role('DefaultRole')
-        )
