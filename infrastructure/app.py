@@ -16,5 +16,3 @@ ThenBackyardPipelineStack(
     env=cdk.Environment(account=os.getenv("ACCOUNT"), region=os.getenv("REGION")))
 
 app.synth()
-
-

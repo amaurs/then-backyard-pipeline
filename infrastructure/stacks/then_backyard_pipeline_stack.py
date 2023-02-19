@@ -16,8 +16,8 @@ class ThenBackyardPipelineStack(cdk.Stack):
             synth=pipelines.ShellStep(
                 'Build',
                 input=pipelines.CodePipelineSource.git_hub(
-                    repo_string='amaurs/then-backyard',
-                    branch='master',
+                    repo_string='amaurs/then-backyard-pipeline',
+                    branch='main',
                     authentication=cdk.SecretValue.secrets_manager(
                         os.getenv('GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME'))),
                 additional_inputs={
@@ -31,8 +31,8 @@ class ThenBackyardPipelineStack(cdk.Stack):
                 commands=[
                     'ls',
                     "npm install -g aws-cdk",
-                    'pip install -r requirements',
+                    'python -m pip install -r requirements.txt',
+                    'cdk synth',
                 ]
-            ),
-
+            )
         )
