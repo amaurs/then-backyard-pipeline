@@ -59,7 +59,7 @@ logging.info(f'REGION 🌎 {os.getenv("REGION")}')
 ThenPipelineBackyardStack(
     app,
     id='ThenPipelineBackyardStack',
-    env=cdk.Environment(account=os.environ("ACCOUNT"), region=os.environ("REGION")));
+    env=cdk.Environment(account=os.getenv("ACCOUNT"), region=os.getenv("REGION")));
 
 app.synth()
 
