@@ -19,7 +19,6 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                             "python -m pip install -r requirements.txt",
                                             "ls",
                                             "pwd",
-                                            "echo cd infrastructure",
                                             "cd infrastructure",
                                             "cdk synth"]
                                         )
