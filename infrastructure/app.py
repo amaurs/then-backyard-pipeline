@@ -13,7 +13,7 @@ from aws_cdk import pipelines
 class ThenBackyardAppStage(cdk.Stage):
     def __init__(self, scope, id, **kwargs):
         super().__init__(scope, id, **kwargs)
-        ChaliceApp(app, 'then-backyard-pipeline')
+        chalice_stack = ChaliceApp(app, 'then-backyard-pipeline')
 
 
 class ThenPipelineBackyardStack(cdk.Stack):
@@ -56,7 +56,10 @@ app = cdk.App()
 logging.info(f'ACCOUNT 👉🏽 {os.getenv("ACCOUNT")}')
 logging.info(f'REGION 🌎 {os.getenv("REGION")}')
 
-ThenPipelineBackyardStack(app, id='ThenPipelineBackyardStack')
+ThenPipelineBackyardStack(
+    app,
+    id='ThenPipelineBackyardStack',
+    env=cdk.Environment(account=os.environ("ACCOUNT"), region=os.environ("REGION")));
 
 app.synth()
 
