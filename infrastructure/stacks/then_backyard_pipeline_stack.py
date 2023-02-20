@@ -18,7 +18,7 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                                 os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME"))),
                                         additional_inputs={
                                             'then-backyard': CodePipelineSource.git_hub(
-                                                "amaurs/then-backyard", "master",
+                                                "amaurs/then-backyard", "main",
                                                 authentication=cdk.SecretValue.secrets_manager(
                                                     os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME"))),
                                         },
