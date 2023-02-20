@@ -12,13 +12,23 @@ class ThenBackyardPipelineStack(cdk.Stack):
         pipeline = CodePipeline(self, "ThenBackyardPipeline",
                         pipeline_name="ThenBackyardPipeline",
                         synth=ShellStep("Synth",
-                                        input=CodePipelineSource.git_hub("amaurs/then-backyard-pipeline", "main",
-                                                                         authentication=cdk.SecretValue.secrets_manager(os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME"))),
+                                        input=CodePipelineSource.git_hub(
+                                            "amaurs/then-backyard-pipeline", "main",
+                                            authentication=cdk.SecretValue.secrets_manager(
+                                                os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME"))),
+                                        additional_inputs={
+                                            'then-backyard': CodePipelineSource.git_hub(
+                                                "amaurs/then-backyard", "master",
+                                                authentication=cdk.SecretValue.secrets_manager(
+                                                    os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME"))),
+                                        },
                                         commands=[
                                             "npm install -g aws-cdk",
                                             "python -m pip install -r requirements.txt",
                                             "ls",
-                                            "pwd",
+                                            "ls infrastructure",
+                                            "ls runtime",
+                                            "ls then-backyard",
                                             "cd infrastructure",
                                             "cdk synth"],
                                         env={
