@@ -4,6 +4,8 @@ import aws_cdk as cdk
 from aws_cdk.pipelines import CodePipeline, ShellStep, CodePipelineSource
 from constructs import Construct
 
+from stacks.then_backyard_app_stage import ThenBackyardAppStage
+
 
 class ThenBackyardPipelineStack(cdk.Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
@@ -17,7 +19,7 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                             authentication=cdk.SecretValue.secrets_manager(
                                                 os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME"))),
                                         additional_inputs={
-                                            'then-backyard': CodePipelineSource.git_hub(
+                                            'runtime': CodePipelineSource.git_hub(
                                                 "amaurs/then-backyard", "main",
                                                 authentication=cdk.SecretValue.secrets_manager(
                                                     os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME"))),
@@ -28,7 +30,6 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                             "ls",
                                             "ls infrastructure",
                                             "ls runtime",
-                                            "ls then-backyard",
                                             "cd infrastructure",
                                             "cdk synth"],
                                         env={
