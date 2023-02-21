@@ -1,9 +1,6 @@
 import os
 
-try:
-    from aws_cdk import core as cdk
-except ImportError:
-    import aws_cdk as cdk
+import aws_cdk as cdk
 
 from chalice.cdk import Chalice
 

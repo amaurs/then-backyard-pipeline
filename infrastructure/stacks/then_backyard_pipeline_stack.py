@@ -41,3 +41,7 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                         primary_output_directory='infrastructure/cdk.out'
                                         )
                                 )
+
+        pipeline.add_stage(ThenBackyardAppStage(self, "Deployment",
+                                                env=cdk.Environment(account=os.getenv("ACCOUNT"),
+                                                                    region=os.getenv("REGION"))))
