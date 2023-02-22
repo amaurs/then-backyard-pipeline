@@ -20,6 +20,7 @@ class ChaliceApp(cdk.Stack):
         self.chalice = Chalice(
             self, 'ChaliceApp', source_dir=RUNTIME_SOURCE_DIR,
             stage_config={
+                "api_gateway_endpoint_type": "REGIONAL",
                 "api_gateway_custom_domain": {
                     "domain_name": domain_name,
                     "certificate_arn": os.getenv("CERTIFICATE_ARN"),
