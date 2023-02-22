@@ -23,7 +23,7 @@ class ChaliceApp(cdk.Stack):
         self.hosted_zone = HostedZone(
             self,
             "ThenHostedZone",
-            zone_name=os.getenv("HOSTED_ZONE_ID"))
+            zone_name=self.domain_name)
 
         self.acm_cert = Certificate(
             self,
