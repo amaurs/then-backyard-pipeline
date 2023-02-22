@@ -18,8 +18,10 @@ class ChaliceApp(cdk.Stack):
             stage_config={
                 "stages": {
                     "dev": {
-                        "api_gateway_custom_domain": os.getenv("API_GATEWAY_CUSTOM_DOMAIN"),
-                        "certificate_arn": os.getenv("CERTIFICATE_ARN"),
+                        "api_gateway_custom_domain": {
+                            "domain_name": os.getenv("API_GATEWAY_CUSTOM_DOMAIN"),
+                            "certificate_arn": os.getenv("CERTIFICATE_ARN"),
+                        }
                     }
                 }
             }
