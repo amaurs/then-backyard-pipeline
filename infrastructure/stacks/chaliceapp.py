@@ -1,6 +1,7 @@
 import os
 
 import aws_cdk as cdk
+from aws_cdk.aws_route53 import HostedZone, CfnRecordSet
 
 from chalice.cdk import Chalice
 
@@ -13,16 +14,35 @@ class ChaliceApp(cdk.Stack):
 
     def __init__(self, scope, id, **kwargs):
         super().__init__(scope, id, **kwargs)
+
+        domain_name = os.environ["API_GATEWAY_CUSTOM_DOMAIN"]
+
         self.chalice = Chalice(
             self, 'ChaliceApp', source_dir=RUNTIME_SOURCE_DIR,
             stage_config={
-                "stages": {
-                    "dev": {
-                        "api_gateway_custom_domain": {
-                            "domain_name": os.getenv("API_GATEWAY_CUSTOM_DOMAIN"),
-                            "certificate_arn": os.getenv("CERTIFICATE_ARN"),
-                        }
-                    }
+                "api_gateway_custom_domain": {
+                    "domain_name": domain_name,
+                    "certificate_arn": os.getenv("CERTIFICATE_ARN"),
                 }
             }
+        )
+
+        # The following approach is based off https://github.com/aws/chalice/issues/1728
+
+        hosted_zone = HostedZone.from_hosted_zone_id(self, "ThenHostedZone", os.getenv("HOSTED_ZONE_ID"))
+
+        custom_domain = self.chalice.get_resource("ApiGatewayCustomDomain")
+        CfnRecordSet(
+            self,
+            "ThenBackyardAPISubdomain",
+            hosted_zone_id=hosted_zone.hosted_zone_id,
+            name=domain_name,
+            type="A",
+            alias_target=CfnRecordSet.AliasTargetProperty(
+                dns_name=custom_domain.get_att("DistributionDomainName").to_string(),
+                hosted_zone_id=custom_domain.get_att(
+                    "DistributionHostedZoneId"
+                ).to_string(),
+                evaluate_target_health=False,
+            ),
         )
