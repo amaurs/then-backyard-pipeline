@@ -40,9 +40,9 @@ class ChaliceApp(cdk.Stack):
             name=domain_name,
             type="A",
             alias_target=CfnRecordSet.AliasTargetProperty(
-                dns_name=custom_domain.get_att("DistributionDomainName").to_string(),
+                dns_name=custom_domain.get_att("RegionalDomainName").to_string(),
                 hosted_zone_id=custom_domain.get_att(
-                    "DistributionHostedZoneId"
+                    "RegionalHostedZoneId"
                 ).to_string(),
                 evaluate_target_health=False,
             ),
