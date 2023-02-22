@@ -18,7 +18,7 @@ class ChaliceApp(cdk.Stack):
 
         # The following approach is based off https://github.com/aws/chalice/issues/1728
 
-        domain_name = "api.then.gallery"
+        self.domain_name = "api.then.gallery"
 
         self.hosted_zone = HostedZone(
             self,
@@ -28,7 +28,7 @@ class ChaliceApp(cdk.Stack):
         self.acm_cert = Certificate(
             self,
             "ThenBackyardCertificate",
-            domain_name=self.domain,
+            domain_name=self.domain_name,
             validation=CertificateValidation.from_dns(self.hosted_zone))
 
         self.chalice = Chalice(
@@ -37,7 +37,7 @@ class ChaliceApp(cdk.Stack):
             stage_config={
                 "api_gateway_endpoint_type": "EDGE",
                 "api_gateway_custom_domain": {
-                    "domain_name": domain_name,
+                    "domain_name": self.domain_name,
                     "certificate_arn": self.acm_cert.certificate_arn,
                 }
             })
@@ -47,7 +47,7 @@ class ChaliceApp(cdk.Stack):
             self,
             "ThenBackyardAPISubdomain",
             hosted_zone_id=self.hosted_zone.hosted_zone_id,
-            name=domain_name,
+            name=self.domain_name,
             type="A",
             alias_target=CfnRecordSet.AliasTargetProperty(
                 dns_name=self.custom_domain.get_att("DistributionDomainName").to_string(),
