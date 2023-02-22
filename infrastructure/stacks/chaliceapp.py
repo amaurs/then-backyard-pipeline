@@ -16,6 +16,11 @@ class ChaliceApp(cdk.Stack):
         self.chalice = Chalice(
             self, 'ChaliceApp', source_dir=RUNTIME_SOURCE_DIR,
             stage_config={
-                'environment_variables': {}
+                "stages": {
+                    "dev": {
+                        "api_gateway_custom_domain": os.getenv("API_GATEWAY_CUSTOM_DOMAIN"),
+                        "certificate_arn": os.getenv("CERTIFICATE_ARN"),
+                    }
+                }
             }
         )
