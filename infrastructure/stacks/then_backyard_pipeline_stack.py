@@ -31,8 +31,6 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                             "ls infrastructure",
                                             "ls runtime",
                                             "cd infrastructure",
-                                            'echo {"domain_name": "{domain_name}"} > runtime/.chalice/config.gen.json'.format(domain_name=os.getenv("DOMAIN_NAME")),
-                                            "cat runtime/.chalice/config.gen.json",
                                             "cdk synth"],
                                         env={
                                             'ACCOUNT': os.getenv("ACCOUNT"),
