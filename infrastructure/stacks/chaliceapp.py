@@ -76,6 +76,9 @@ class ChaliceApp(cdk.Stack):
                     "certificate_arn": acm_cert.certificate_arn,
                 },
                 "api_gateway_stage": api_version,
+                "environment_variables": {
+                    's3_BUCKET_NAME': domain_name
+                }
             }
         )
 
