@@ -35,7 +35,10 @@ class ChaliceApp(cdk.Stack):
             "ThenBackyardZoneDelegationRecord",
             record_name=domain_name,
             name_servers=hosted_zone.hosted_zone_name_servers,
-            zone=HostedZone.from_lookup(self, "ThenHostedZone", domain_name=aphex_domain),
+            zone=HostedZone.from_hosted_zone_attributes(
+                self, "ThenHostedZone",
+                hosted_zone_id=os.getenv("HOSTED_ZONE_ID"),
+                zone_name=aphex_domain),
             ttl=cdk.Duration.minutes(1)  # TODO: should increase this value once everything works
         )
 
