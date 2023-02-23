@@ -3,7 +3,7 @@ import os
 import aws_cdk as cdk
 from aws_cdk.aws_certificatemanager import Certificate, CertificateValidation
 from aws_cdk.aws_route53 import HostedZone, CfnRecordSet, ZoneDelegationRecord
-from aws_cdk.aws_s3 import Bucket, CorsRule, HttpMethods
+from aws_cdk.aws_s3 import Bucket, CorsRule, HttpMethods, BlockPublicAccess
 
 from chalice.cdk import Chalice
 
@@ -54,6 +54,7 @@ class ChaliceApp(cdk.Stack):
             self,
             "ThenBackyardBucket",
             bucket_name=domain_name,
+            block_public_access=BlockPublicAccess.BLOCK_ALL,
             cors=[
                 CorsRule(
                     allowed_headers=["*"],
