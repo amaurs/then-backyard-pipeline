@@ -49,6 +49,8 @@ class ChaliceApp(cdk.Stack):
             validation=CertificateValidation.from_dns(hosted_zone)
         )
 
+        api_version = "v0"
+
         chalice = Chalice(
             self,
             'ChaliceApp',
@@ -58,7 +60,8 @@ class ChaliceApp(cdk.Stack):
                 "api_gateway_custom_domain": {
                     "domain_name": domain_name,
                     "certificate_arn": acm_cert.certificate_arn,
-                }
+                },
+                "api_gateway_stage": api_version,
             }
         )
 
