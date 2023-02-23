@@ -77,7 +77,7 @@ class ChaliceApp(cdk.Stack):
                 },
                 "api_gateway_stage": api_version,
                 "environment_variables": {
-                    's3_BUCKET_NAME': domain_name
+                    'S3_BUCKET_NAME': domain_name
                 }
             }
         )
