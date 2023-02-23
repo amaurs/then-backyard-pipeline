@@ -3,6 +3,7 @@ import os
 import aws_cdk as cdk
 from aws_cdk.aws_certificatemanager import Certificate, CertificateValidation
 from aws_cdk.aws_route53 import HostedZone, CfnRecordSet, ZoneDelegationRecord
+from aws_cdk.aws_s3 import Bucket, CorsRule, HttpMethods
 
 from chalice.cdk import Chalice
 
@@ -49,6 +50,18 @@ class ChaliceApp(cdk.Stack):
             validation=CertificateValidation.from_dns(hosted_zone)
         )
 
+        bucket = Bucket(
+            self,
+            "ThenBackyardBucket",
+            bucket_name=domain_name,
+            cors=[
+                CorsRule(
+                    allowed_headers=["*"],
+                    allowed_methods=[HttpMethods.PUT, HttpMethods.POST, HttpMethods.GET, HttpMethods.DELETE],
+                    allowed_origins=["*"]
+                )
+            ])
+
         api_version = "v0"
 
         chalice = Chalice(
@@ -63,6 +76,10 @@ class ChaliceApp(cdk.Stack):
                 },
                 "api_gateway_stage": api_version,
             }
+        )
+
+        bucket.grant_read_write(
+            chalice.get_role('DefaultRole')
         )
 
         custom_domain = chalice.get_resource("ApiGatewayCustomDomain")
