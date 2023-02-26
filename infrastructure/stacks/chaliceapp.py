@@ -38,7 +38,7 @@ class ChaliceApp(cdk.Stack):
             name_servers=hosted_zone.hosted_zone_name_servers,
             zone=HostedZone.from_hosted_zone_attributes(
                 self, "ThenHostedZone",
-                hosted_zone_id=os.getenv("HOSTED_ZONE_ID"),
+                hosted_zone_id=os.getenv("THEN_HOSTED_ZONE_ID"),
                 zone_name=aphex_domain),
             ttl=cdk.Duration.minutes(1)  # TODO: should increase this value once everything works
         )
