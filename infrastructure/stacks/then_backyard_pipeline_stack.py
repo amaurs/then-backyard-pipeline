@@ -27,9 +27,6 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                         commands=[
                                             "npm install -g aws-cdk",
                                             "python -m pip install -r requirements.txt",
-                                            "ls",
-                                            "ls infrastructure",
-                                            "ls runtime",
                                             "cd runtime",
                                             "pytest",
                                             "cd ../infrastructure",
