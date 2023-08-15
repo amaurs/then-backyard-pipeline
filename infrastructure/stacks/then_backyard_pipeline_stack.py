@@ -30,7 +30,9 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                             "ls",
                                             "ls infrastructure",
                                             "ls runtime",
-                                            "cd infrastructure",
+                                            "cd runtime",
+                                            "pytest",
+                                            "cd ../infrastructure",
                                             "cdk synth"],
                                         env={
                                             'ACCOUNT': os.getenv("ACCOUNT"),
