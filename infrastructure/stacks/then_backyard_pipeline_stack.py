@@ -2,6 +2,7 @@ import os
 
 import aws_cdk as cdk
 from aws_cdk.pipelines import CodePipeline, ShellStep, CodePipelineSource
+import aws_cdk.aws_s3 as s3
 from constructs import Construct
 
 from stacks.then_backyard_app_stage import ThenBackyardAppStage
@@ -23,17 +24,20 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                                 "amaurs/then-backyard", "main",
                                                 authentication=cdk.SecretValue.secrets_manager(
                                                     os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME"))),
+                                            'vendor': CodePipelineSource.s3(
+                                                bucket=s3.Bucket.from_bucket_arn(
+                                                    self,
+                                                    id='ThirdPartyBucket',
+                                                    bucket_arn='arn:aws:s3:::if.then.gallery'),
+                                                object_key='thirdparty/dependency_injector-4.41.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl'),
                                         },
                                         commands=[
                                             "npm install -g aws-cdk",
                                             "python -m pip install -r requirements.txt",
-                                            "cd runtime",
-                                            "mkdir vendor",
-                                            "cd vendor",
-                                            "python -m pip download --only-binary :all: --dest . --no-cache dependency-injector",
+                                            "mv vendor runtime",
+                                            "cd runtime/vendor",
                                             "ls",
                                             "cd ..",
-                                            "ls",
                                             "python -m pytest",
                                             "cd ../infrastructure",
                                             "cdk synth"],
