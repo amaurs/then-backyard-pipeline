@@ -4,6 +4,7 @@ import aws_cdk as cdk
 from aws_cdk.aws_certificatemanager import Certificate, CertificateValidation
 from aws_cdk.aws_route53 import HostedZone, CfnRecordSet, ZoneDelegationRecord
 from aws_cdk.aws_s3 import Bucket, CorsRule, HttpMethods, BlockPublicAccess
+from aws_cdk.aws_iam import PolicyStatement, Policy
 
 from chalice.cdk import Chalice
 
@@ -82,6 +83,13 @@ class ChaliceApp(cdk.Stack):
                 }
             }
         )
+
+        getSecretPolicyStatement = PolicyStatement(
+            actions=['secretsmanager:GetSecretValue'],
+            resources=['arn:aws:secretsmanager:us-east-1:892700351551:secret:*'])
+
+        chalice.get_role('DefaultRole').attach_inline_policy(
+            policy=Policy(scope=self, id='GetSecretPolicy', statements=[getSecretPolicyStatement]))
 
         bucket.grant_read_write(
             chalice.get_role('DefaultRole')
