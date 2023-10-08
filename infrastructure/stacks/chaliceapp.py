@@ -80,6 +80,7 @@ class ChaliceApp(cdk.Stack):
                 "environment_variables": {
                     'S3_BUCKET_NAME': domain_name,
                     'JWT_SECRET_NAME': os.getenv("JWT_SECRET_NAME"),
+                    'HASHED_PASSWORD_SECRET_NAME': os.getenv("HASHED_PASSWORD_SECRET_NAME")
                 }
             }
         )
