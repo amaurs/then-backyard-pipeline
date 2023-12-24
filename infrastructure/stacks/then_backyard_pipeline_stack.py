@@ -36,7 +36,7 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                                 object_key='thirdparty/dependency_injector-4.41.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl'),
                                         },
                                         commands=[
-                                            "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh",
+                                            "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y",
                                             "npm install -g aws-cdk",
                                             "python -m pip install -r requirements.txt",
                                             "mv vendor runtime",
