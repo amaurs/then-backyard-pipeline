@@ -24,6 +24,10 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                                 "amaurs/then-backyard", "main",
                                                 authentication=cdk.SecretValue.secrets_manager(
                                                     os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME"))),
+                                            'rust-runtime': CodePipelineSource.git_hub(
+                                                "amaurs/then-backend", "main",
+                                                authentication=cdk.SecretValue.secrets_manager(
+                                                    os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME"))),
                                             'vendor': CodePipelineSource.s3(
                                                 bucket=s3.Bucket.from_bucket_arn(
                                                     self,
@@ -32,6 +36,7 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                                 object_key='thirdparty/dependency_injector-4.41.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl'),
                                         },
                                         commands=[
+                                            "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh",
                                             "npm install -g aws-cdk",
                                             "python -m pip install -r requirements.txt",
                                             "mv vendor runtime",
