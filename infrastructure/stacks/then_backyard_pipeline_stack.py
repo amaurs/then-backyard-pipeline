@@ -37,9 +37,10 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                         },
                                         commands=[
                                             "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y",
+                                            ". $HOME/.cargo/env",
                                             "npm install -g aws-cdk",
                                             "python -m pip install -r requirements.txt",
-                                            "python -m pip install cargo-lambda",
+                                            "pip3 install cargo-lambda",
                                             "cd rust-runtime",
                                             "cargo lambda build --arm64",
                                             "cd ..",
