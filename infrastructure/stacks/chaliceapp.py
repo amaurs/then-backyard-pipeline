@@ -2,9 +2,11 @@ import os
 
 import aws_cdk as cdk
 from aws_cdk.aws_certificatemanager import Certificate, CertificateValidation
+from aws_cdk.aws_lambda import Function, Runtime, Architecture, Code
 from aws_cdk.aws_route53 import HostedZone, CfnRecordSet, ZoneDelegationRecord
 from aws_cdk.aws_s3 import Bucket, CorsRule, HttpMethods, BlockPublicAccess
 from aws_cdk.aws_iam import PolicyStatement, Policy
+from aws_cdk.aws_apigateway import RestApi, LambdaIntegration, Cors, AuthorizationType, CorsOptions, MethodOptions
 
 from chalice.cdk import Chalice
 
@@ -111,3 +113,30 @@ class ChaliceApp(cdk.Stack):
                 evaluate_target_health=False,
             ),
         )
+
+        api = RestApi.from_rest_api_attributes(
+            self,
+            'RestAPI',
+            rest_api_id=chalice.get_resource("RestAPI").get_att("RestApiId").to_string(),
+            root_resource_id=chalice.get_resource("RestAPI").get_att("RootResourceId").to_string())
+
+        flora = api.root.add_resource(
+            "flora",
+            default_cors_preflight_options=CorsOptions(
+                allow_origins=Cors.ALL_ORIGINS,
+                allow_methods=Cors.ALL_METHODS,
+                allow_headers=Cors.DEFAULT_HEADERS),
+            default_method_options=MethodOptions(authorization_type=AuthorizationType.NONE))
+
+        flora.add_method('GET', LambdaIntegration(Function(
+            self,
+            "ThenBackendLambda",
+            runtime=Runtime.PROVIDED_AL2,
+            architecture=Architecture.ARM_64,
+            handler="bootstrap",
+            code=Code.from_asset(path="../rust-runtime/target/lambda/then-backend"),
+            function_name="ThenBackend",
+            environment={
+                "TIMESTAMP": os.getenv("TIMESTAMP")
+            },
+        )))
