@@ -56,6 +56,7 @@ class ChaliceApp(cdk.Stack):
         bucket = Bucket(
             self,
             "ThenBackyardBucket",
+            versioned=True,
             bucket_name=domain_name,
             block_public_access=BlockPublicAccess.BLOCK_ALL,
             cors=[
