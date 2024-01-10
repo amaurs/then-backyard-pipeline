@@ -129,7 +129,7 @@ class ChaliceApp(cdk.Stack):
                 allow_headers=Cors.DEFAULT_HEADERS),
             default_method_options=MethodOptions(authorization_type=AuthorizationType.NONE))
 
-        flora.add_method('GET', LambdaIntegration(Function(
+        integration = LambdaIntegration(Function(
             self,
             "ThenBackendLambda",
             runtime=Runtime.PROVIDED_AL2,
@@ -140,4 +140,24 @@ class ChaliceApp(cdk.Stack):
             environment={
                 "TIMESTAMP": os.getenv("TIMESTAMP")
             },
-        )))
+        ))
+
+        fractal = api.root.add_resource(
+            "fractal",
+            default_cors_preflight_options=CorsOptions(
+                allow_origins=Cors.ALL_ORIGINS,
+                allow_methods=Cors.ALL_METHODS,
+                allow_headers=Cors.DEFAULT_HEADERS),
+            default_method_options=MethodOptions(authorization_type=AuthorizationType.NONE))
+
+        fractal.add_proxy(
+            any_method=True,
+            default_cors_preflight_options=CorsOptions(
+                allow_origins=Cors.ALL_ORIGINS,
+                allow_methods=Cors.ALL_METHODS,
+                allow_headers=Cors.DEFAULT_HEADERS),
+            default_integration=integration,
+            default_method_options=MethodOptions(authorization_type=AuthorizationType.NONE)
+        )
+
+        flora.add_method('GET', integration)
