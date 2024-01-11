@@ -142,6 +142,12 @@ class ChaliceApp(cdk.Stack):
             },
         ))
 
+        # The fractal resource was created to return png images. Api Gateway transforms the response
+        # from the lambda. The request should include an Accept header that specifies the Content-Type.
+        # If not present, Api Gateway will assume the default value which is application/json. On the
+        # other hand, the response from the lambda should have the body encoded to base64 and contain
+        # the field isBase64Encoded set as true. Additionally, the resource should be configured to
+        # accept the appropriate binary media type, in this case image/png.
         fractal = api.root.add_resource(
             "fractal",
             default_cors_preflight_options=CorsOptions(
