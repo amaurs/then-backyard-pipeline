@@ -132,7 +132,7 @@ class ChaliceApp(cdk.Stack):
         integration = LambdaIntegration(Function(
             self,
             "ThenBackendLambda",
-            runtime=Runtime.PROVIDED_AL2,
+            runtime=Runtime.PROVIDED_AL2023,
             architecture=Architecture.ARM_64,
             handler="bootstrap",
             code=Code.from_asset(path="../rust-runtime/target/lambda/then-backend"),
