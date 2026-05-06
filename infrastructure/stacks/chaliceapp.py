@@ -83,7 +83,8 @@ class ChaliceApp(cdk.Stack):
                 "environment_variables": {
                     'S3_BUCKET_NAME': domain_name,
                     'JWT_SECRET_NAME': os.getenv("JWT_SECRET_NAME"),
-                    'HASHED_PASSWORD_SECRET_NAME': os.getenv("HASHED_PASSWORD_SECRET_NAME")
+                    'HASHED_PASSWORD_SECRET_NAME': os.getenv("HASHED_PASSWORD_SECRET_NAME"),
+                    'EC2_INSTANCE_ID': os.getenv("EC2_INSTANCE_ID")
                 }
             }
         )
@@ -92,8 +93,19 @@ class ChaliceApp(cdk.Stack):
             actions=['secretsmanager:GetSecretValue'],
             resources=['arn:aws:secretsmanager:us-east-1:892700351551:secret:*'])
 
+        ec2ControlPolicyStatement = PolicyStatement(
+            actions=['ec2:StartInstances', 'ec2:StopInstances'],
+            resources=[f'arn:aws:ec2:us-east-1:892700351551:instance/{os.getenv("EC2_INSTANCE_ID")}'])
+
+        ec2DescribePolicyStatement = PolicyStatement(
+            actions=['ec2:DescribeInstances'],
+            resources=['*'])
+
         chalice.get_role('DefaultRole').attach_inline_policy(
             policy=Policy(scope=self, id='GetSecretPolicy', statements=[getSecretPolicyStatement]))
+
+        chalice.get_role('DefaultRole').attach_inline_policy(
+            policy=Policy(scope=self, id='EC2ControlPolicy', statements=[ec2ControlPolicyStatement, ec2DescribePolicyStatement]))
 
         bucket.grant_read_write(
             chalice.get_role('DefaultRole')
