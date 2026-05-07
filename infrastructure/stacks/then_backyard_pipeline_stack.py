@@ -60,6 +60,7 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                             'JWT_SECRET_NAME': os.getenv("JWT_SECRET_NAME"),
                                             'GOOGLE_CLIENT_ID_SECRET_NAME': os.getenv("GOOGLE_CLIENT_ID_SECRET_NAME"),
                                             'EMAIL_ALLOWLIST_SECRET_NAME': os.getenv("EMAIL_ALLOWLIST_SECRET_NAME"),
+                                            'VITE_GOOGLE_CLIENT_ID': os.getenv("VITE_GOOGLE_CLIENT_ID"),
                                             'EC2_INSTANCE_ID': os.getenv("EC2_INSTANCE_ID"),
                                         },
                                         primary_output_directory='infrastructure/cdk.out'
