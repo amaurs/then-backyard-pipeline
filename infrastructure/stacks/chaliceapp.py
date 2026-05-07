@@ -83,7 +83,8 @@ class ChaliceApp(cdk.Stack):
                 "environment_variables": {
                     'S3_BUCKET_NAME': domain_name,
                     'JWT_SECRET_NAME': os.getenv("JWT_SECRET_NAME"),
-                    'HASHED_PASSWORD_SECRET_NAME': os.getenv("HASHED_PASSWORD_SECRET_NAME"),
+                    'GOOGLE_CLIENT_ID_SECRET_NAME': os.getenv("GOOGLE_CLIENT_ID_SECRET_NAME"),
+                    'EMAIL_ALLOWLIST_SECRET_NAME': os.getenv("EMAIL_ALLOWLIST_SECRET_NAME"),
                     'EC2_INSTANCE_ID': os.getenv("EC2_INSTANCE_ID")
                 }
             }
