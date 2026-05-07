@@ -57,6 +57,10 @@ class ThenBackyardPipelineStack(cdk.Stack):
                                             'GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME': os.getenv(
                                                 "GITHUB_PERSONAL_ACCESS_TOKEN_SECRET_NAME"),
                                             'THEN_HOSTED_ZONE_ID': os.getenv("THEN_HOSTED_ZONE_ID"),
+                                            'JWT_SECRET_NAME': os.getenv("JWT_SECRET_NAME"),
+                                            'GOOGLE_CLIENT_ID_SECRET_NAME': os.getenv("GOOGLE_CLIENT_ID_SECRET_NAME"),
+                                            'EMAIL_ALLOWLIST_SECRET_NAME': os.getenv("EMAIL_ALLOWLIST_SECRET_NAME"),
+                                            'EC2_INSTANCE_ID': os.getenv("EC2_INSTANCE_ID"),
                                         },
                                         primary_output_directory='infrastructure/cdk.out'
                                         )
