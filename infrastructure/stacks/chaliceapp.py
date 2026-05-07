@@ -151,7 +151,7 @@ class ChaliceApp(cdk.Stack):
             code=Code.from_asset(path="../rust-runtime/target/lambda/then-backend"),
             function_name="ThenBackend",
             environment={
-                "TIMESTAMP": os.getenv("TIMESTAMP")
+                "TIMESTAMP": os.getenv("TIMESTAMP", "1702078620")
             },
         ))
 
